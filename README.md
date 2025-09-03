@@ -1,6 +1,6 @@
 # SQL Portfolio
 
-Halo! Saya [Nama Kamu], seorang [Data Analyst / Business Analyst / Data Enthusiast] dengan fokus pada pengolahan data menggunakan **SQL**.  
+Halo! Saya EGi, seorang Data Enthusiast dengan fokus pada pengolahan data menggunakan berbagai tools, salah satunya **SQL**.  
 Portfolio ini berisi proyek-proyek SQL untuk menunjukkan kemampuan saya dalam:
 
 - Data Cleaning & Transformation
