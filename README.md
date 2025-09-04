@@ -1,6 +1,6 @@
 # SQL Portfolio
 
-Halo! Saya EGi, seorang Data Enthusiast dengan fokus pada pengolahan data menggunakan berbagai tools, salah satunya **SQL**.  
+Hello! Saya Egira, seorang Data Enthusiast dengan fokus pada pengolahan data menggunakan berbagai tools, salah satunya **SQL**.  
 Portfolio ini berisi proyek-proyek SQL untuk menunjukkan kemampuan saya dalam:
 
 - Data Cleaning & Transformation
