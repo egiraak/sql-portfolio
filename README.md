@@ -1,19 +1,21 @@
-# SQL Portfolio
+# Cohort Analysis
 
-Hello! Saya Egira, seorang Data Enthusiast dengan fokus pada pengolahan data menggunakan berbagai tools, salah satunya **SQL**.  
-Portfolio ini berisi proyek-proyek SQL untuk menunjukkan kemampuan saya dalam:
+## 📌 Deskripsi
+Proyek ini bertujuan untuk melakukan cohort analysis menggunakan dataset publik.  
+Dijalankan di environment: **PostgreSQL (pgAdmin)**.
 
-- Data Cleaning & Transformation
-- Data Exploration & Analysis
-- Query Optimization
-- Business-related Querying (KPI, Retention, Cohort, dll)
+## Dataset
+- Sumber: Dataset publik (misalnya Kaggle / UCI / Our World in Data)
+- Struktur tabel bervariasi, contoh kolom: `id`, `date`, `value`
 
-## 📂 Daftar Proyek
-1. [Customer Retention Analysis](./project_1_customer_retention/README.md)  
-   *Menghitung customer retention bulanan menggunakan transaksi e-commerce.*
+## SQL Query
+Lihat [query.sql](./query.sql)
 
-2. [Sales Performance Dashboard Queries](./project_2_sales_analysis/README.md)  
-   *Menganalisis pertumbuhan penjualan dan produk terlaris.*
+## Output (contoh)
+| metric   | value |
+|----------|-------|
+| sample_1 | 123   |
+| sample_2 | 456   |
 
-3. [Data Cleaning with SQL](./project_3_data_cleaning/README.md)  
-   *Membersihkan dataset mentah (duplicate, null, format tanggal) menggunakan query SQL.*
+## Insight
+Insight dituliskan berdasarkan hasil query.
