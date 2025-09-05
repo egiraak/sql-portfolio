@@ -4,6 +4,7 @@ Halo! Saya Egira, seorang Data Enthusiast dengan pengalaman di berbagai tools an
 Pada repository ini, saya secara khusus menampilkan **kumpulan mini-project SQL** untuk mendemonstrasikan keahlian dalam menulis query, analisis data berbasis database, dan pemecahan kasus bisnis menggunakan SQL.  
 
 
+
 ## 🎯 Fokus & Skill
 - Data Cleaning & Transformation  
 - Exploratory Analysis (JOIN, Aggregation, Window Functions)  
@@ -11,10 +12,12 @@ Pada repository ini, saya secara khusus menampilkan **kumpulan mini-project SQL*
 - Query Optimization  
 
 
+
 ## 🛠️ Tools yang Digunakan
 - **MySQL** (DbGate, Workbench)  
 - **PostgreSQL** (pgAdmin, DbGate)  
 - **AWS Athena**  
+
 
 
 ## 📂 Daftar Proyek
