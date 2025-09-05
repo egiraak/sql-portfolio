@@ -16,7 +16,6 @@ Pada repository ini, saya secara khusus menampilkan **kumpulan mini-project SQL*
 - **PostgreSQL** (pgAdmin, DbGate)  
 - **AWS Athena**  
 
----
 
 ## 📂 Daftar Proyek
 
@@ -30,5 +29,3 @@ Pada repository ini, saya secara khusus menampilkan **kumpulan mini-project SQL*
 8. [Bank Marketing Campaign Analysis](./bank-marketing) – MySQL  
 9. [COVID-19 Trend Analysis](./covid19-trend) – PostgreSQL (pgAdmin)  
 10. [Airbnb Listings Analysis](./airbnb-listings) – MySQL (DbGate)  
-
----
