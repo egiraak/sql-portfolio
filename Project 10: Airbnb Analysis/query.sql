@@ -1,1 +1,0 @@
-SELECT DATE_FORMAT(NOW(), '%Y-%m') AS current_month, COUNT(*) AS sample_count FROM sample_table;
