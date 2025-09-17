@@ -23,36 +23,46 @@ GROUP BY CustomerID;
 
 -- 1. Buat Cohort berdasarkan bulan first purchase
 WITH first_purchase AS (
-  SELECT CustomerID, MIN(DATE_TRUNC('month', InvoiceDate)) AS cohort_month
-  FROM transactions
-  GROUP BY CustomerID
-)
-SELECT t.CustomerID,
-       f.cohort_month,
-       DATE_TRUNC('month', t.InvoiceDate) AS purchase_month
-FROM transactions t
-JOIN first_purchase f
-ON t.CustomerID = f.CustomerID;
-
--- 2. Hitung Retention Rate per Cohort
-WITH first_purchase AS (
-  SELECT CustomerID, MIN(DATE_TRUNC('month', InvoiceDate)) AS cohort_month
-  FROM transactions
-  GROUP BY CustomerID
+  SELECT 
+    "CustomerID", 
+    MIN(DATE_TRUNC('month', to_timestamp("InvoiceDate", 'MM/DD/YYYY HH24:MI')))::date AS cohort_month
+  FROM d1
+  GROUP BY "CustomerID"
 ),
 customer_activity AS (
-  SELECT f.cohort_month,
-         DATE_TRUNC('month', t.InvoiceDate) AS activity_month,
-         COUNT(DISTINCT t.CustomerID) AS active_customers
-  FROM transactions t
-  JOIN first_purchase f ON t.CustomerID = f.CustomerID
-  GROUP BY f.cohort_month, DATE_TRUNC('month', t.InvoiceDate)
+  SELECT 
+    f.cohort_month,
+    DATE_TRUNC('month', to_timestamp(t."InvoiceDate", 'MM/DD/YYYY HH24:MI'))::date AS activity_month,
+    COUNT(DISTINCT t."CustomerID") AS active_customers
+  FROM d1 t
+  JOIN first_purchase f ON t."CustomerID" = f."CustomerID"
+  GROUP BY f.cohort_month, DATE_TRUNC('month', to_timestamp(t."InvoiceDate", 'MM/DD/YYYY HH24:MI'))::date
+),
+with_offset AS (
+  SELECT 
+    cohort_month,
+    activity_month,
+    EXTRACT(YEAR FROM age(activity_month, cohort_month)) * 12
+      + EXTRACT(MONTH FROM age(activity_month, cohort_month)) AS month_offset,
+    active_customers
+  FROM customer_activity
+),
+cohort_size AS (
+  SELECT cohort_month, active_customers AS cohort_size
+  FROM with_offset
+  WHERE month_offset = 0
 )
-SELECT cohort_month,
-       activity_month,
-       active_customers
-FROM customer_activity
-ORDER BY cohort_month, activity_month;
+
+-- 2. Hitung Retention Rate per Cohort
+SELECT 
+  w.cohort_month,
+  w.activity_month,
+  w.month_offset,
+  w.active_customers,
+  ROUND((w.active_customers::decimal / c.cohort_size) * 100, 2) AS retention_rate
+FROM with_offset w
+JOIN cohort_size c USING (cohort_month)
+ORDER BY w.cohort_month, w.activity_month;
 
 -- RFM ANALYSIS (RECENCY, FREQUENCY, MONETARY)
 
