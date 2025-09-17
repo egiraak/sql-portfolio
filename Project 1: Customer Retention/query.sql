@@ -1,4 +1,4 @@
--- Customer Lifetime Value (CLV) per Customer
+-- Customer Lifetime Value (CLV) PER CUSTOMER
 
 SELECT 
     "CustomerID",
@@ -56,22 +56,50 @@ FROM with_offset w
 JOIN cohort_size c USING (cohort_month)
 ORDER BY w.cohort_month, w.activity_month;
 
--- RFM ANALYSIS (RECENCY, FREQUENCY, MONETARY)
 
--- Hitung RFM Score
-WITH rfm AS (
-  SELECT CustomerID,
-         DATEDIFF(DAY, MAX(InvoiceDate), (SELECT MAX(InvoiceDate) FROM transactions)) AS recency,
-         COUNT(DISTINCT InvoiceNo) AS frequency,
-         SUM(Quantity * UnitPrice) AS monetary
-  FROM transactions
-  GROUP BY CustomerID
+-- RFM (Recency, Frequency, Monetary) ANALYSIS
+WITH customer_summary AS (
+    SELECT 
+        "CustomerID",
+        MAX(to_timestamp("InvoiceDate", 'MM/DD/YYYY HH24:MI')) AS last_purchase,
+        COUNT(DISTINCT "InvoiceNo") AS frequency,
+        SUM("Quantity" * "UnitPrice") AS monetary
+    FROM d1
+    GROUP BY "CustomerID"
+),
+rfm AS (
+    SELECT
+        "CustomerID",
+        DATE_PART('day', CURRENT_DATE - last_purchase) AS recency,
+        frequency,
+        monetary
+    FROM customer_summary
 )
-SELECT CustomerID,
-       NTILE(5) OVER (ORDER BY recency ASC) AS R_Score,
-       NTILE(5) OVER (ORDER BY frequency DESC) AS F_Score,
-       NTILE(5) OVER (ORDER BY monetary DESC) AS M_Score
+SELECT *,
+    NTILE(5) OVER (ORDER BY recency ASC) AS r_score,
+    NTILE(5) OVER (ORDER BY frequency DESC) AS f_score,
+    NTILE(5) OVER (ORDER BY monetary DESC) AS m_score
 FROM rfm;
+
+--TOP 5 PRODUCTS PER MONTH (by Revenue)
+WITH monthly_sales AS (
+    SELECT 
+        DATE(DATE_TRUNC('month', to_timestamp("InvoiceDate", 'MM/DD/YYYY HH24:MI'))) AS month,
+        "Description",
+        SUM("Quantity" * "UnitPrice") AS revenue
+    FROM d1
+    GROUP BY month, "Description"
+),
+ranked AS (
+    SELECT *,
+           RANK() OVER (PARTITION BY month ORDER BY revenue DESC) AS rank
+    FROM monthly_sales
+)
+SELECT month, "Description", revenue
+FROM ranked
+WHERE rank <= 5
+ORDER BY month, revenue DESC;
+
 
 -- REPEAT PURCHASE BEHAVIOUR 
 -- 1. Persentase Customer yang Kembali Beli
