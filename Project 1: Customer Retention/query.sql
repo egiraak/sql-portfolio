@@ -1,23 +1,15 @@
--- BASIC RETENTION METRICS
+-- Customer Lifetime Value (CLV) per Customer
 
--- 1. Total Orders per Customer
-SELECT CustomerID, COUNT(DISTINCT InvoiceNo) AS total_orders
-FROM transactions
-GROUP BY CustomerID
-ORDER BY total_orders DESC;
-
--- 2. First & Last Purchase Date per Customer
-SELECT CustomerID,
-       MIN(InvoiceDate) AS first_purchase,
-       MAX(InvoiceDate) AS last_purchase
-FROM transactions
-GROUP BY CustomerID;
-
--- 3. Customer Lifetime (days between first and last purchase)
-SELECT CustomerID,
-       DATEDIFF(DAY, MIN(InvoiceDate), MAX(InvoiceDate)) AS lifetime_days
-FROM transactions
-GROUP BY CustomerID;
+SELECT 
+    "CustomerID",
+    ROUND(SUM("Quantity" * "UnitPrice"), 2) AS lifetime_value,
+    COUNT(DISTINCT "InvoiceNo") AS total_orders,
+    MAX(to_timestamp("InvoiceDate", 'MM/DD/YYYY HH24:MI')) AS last_order_date,
+    MIN(to_timestamp("InvoiceDate", 'MM/DD/YYYY HH24:MI')) AS first_order_date
+FROM d1
+GROUP BY "CustomerID"
+ORDER BY lifetime_value DESC
+LIMIT 10;
 
 -- COHORT ANALYSIS (MONTHLY RETENTION)
 
@@ -108,33 +100,3 @@ diffs AS (
 SELECT CustomerID, AVG(days_between) AS avg_days_between
 FROM diffs
 GROUP BY CustomerID;
-
-
-
-
-
-WITH monthly_users AS (
-    SELECT 
-        DATE_TRUNC('month', order_date) AS month,
-        customer_id
-    FROM transactions
-    GROUP BY 1, customer_id
-),
-retention AS (
-    SELECT 
-        curr.month,
-        COUNT(DISTINCT curr.customer_id) AS active_users,
-        COUNT(DISTINCT CASE WHEN next.customer_id IS NOT NULL THEN curr.customer_id END) AS retained_users
-    FROM monthly_users curr
-    LEFT JOIN monthly_users next
-        ON curr.customer_id = next.customer_id
-        AND next.month = curr.month + INTERVAL '1 month'
-    GROUP BY curr.month
-)
-SELECT 
-    month,
-    active_users,
-    retained_users,
-    ROUND(retained_users::decimal / active_users * 100, 2) AS retention_rate
-FROM retention
-ORDER BY month;
