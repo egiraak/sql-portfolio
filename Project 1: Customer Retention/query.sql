@@ -131,3 +131,14 @@ diffs AS (
 SELECT "CustomerID", ROUND(AVG(days_between)::numeric) AS avg_days_between
 FROM diffs
 GROUP BY "CustomerID";
+
+-- SALES AND RETURN ANALYSIS
+-- 1. Gross Sales, Returns, Net Sales (keseluruhan)
+SELECT
+    SUM(CASE WHEN "Quantity" > 0 THEN "Quantity" * "UnitPrice" ELSE 0 END) AS gross_sales,
+    SUM(CASE WHEN "Quantity" < 0 THEN ABS("Quantity") * "UnitPrice" ELSE 0 END) AS returns,
+    SUM("Quantity" * "UnitPrice") AS net_sales
+FROM d1;
+
+
+
