@@ -104,27 +104,30 @@ ORDER BY month, revenue DESC;
 -- REPEAT PURCHASE BEHAVIOUR 
 -- 1. Persentase Customer yang Kembali Beli
 WITH purchases AS (
-  SELECT CustomerID, COUNT(DISTINCT InvoiceNo) AS orders
-  FROM transactions
-  GROUP BY CustomerID
+  SELECT "CustomerID", COUNT(DISTINCT "InvoiceNo") AS orders
+  FROM d1
+  GROUP BY "CustomerID"
 )
 SELECT SUM(CASE WHEN orders > 1 THEN 1 ELSE 0 END)*100.0/COUNT(*) AS repeat_rate
 FROM purchases;
 
 -- 2. Waktu Rata-rata Antar Pembelian (Average Days Between Purchases)
 WITH ordered_purchases AS (
-  SELECT CustomerID,
-         InvoiceDate,
-         ROW_NUMBER() OVER (PARTITION BY CustomerID ORDER BY InvoiceDate) AS rn
-  FROM transactions
+  SELECT "CustomerID",
+         to_timestamp("InvoiceDate", 'MM/DD/YYYY HH24:MI') AS ts_invoice,
+         ROW_NUMBER() OVER (
+             PARTITION BY "CustomerID" 
+             ORDER BY to_timestamp("InvoiceDate", 'MM/DD/YYYY HH24:MI')
+         ) AS rn
+  FROM d1
 ),
 diffs AS (
-  SELECT a.CustomerID,
-         DATEDIFF(DAY, a.InvoiceDate, b.InvoiceDate) AS days_between
+  SELECT a."CustomerID",
+         (b.ts_invoice::date - a.ts_invoice::date) AS days_between
   FROM ordered_purchases a
   JOIN ordered_purchases b
-  ON a.CustomerID = b.CustomerID AND a.rn + 1 = b.rn
+    ON a."CustomerID" = b."CustomerID" AND a.rn + 1 = b.rn
 )
-SELECT CustomerID, AVG(days_between) AS avg_days_between
+SELECT "CustomerID", ROUND(AVG(days_between)::numeric) AS avg_days_between
 FROM diffs
-GROUP BY CustomerID;
+GROUP BY "CustomerID";
