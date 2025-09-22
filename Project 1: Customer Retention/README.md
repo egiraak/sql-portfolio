@@ -10,7 +10,13 @@ Dijalankan di environment: **DbGate (Postgres)**.
 - Dataset: [E-commerce Transactions (Kaggle)](https://www.kaggle.com/datasets/carrie1/ecommerce-data)
 - Tabel utama: `d1`  
   - `InvoiceNo`
-  - 'StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country'
+  - `StockCode`
+  - `Description`
+  - `Quantity`
+  - `InvoiceDate`
+  - `UnitPrice`
+  - `CustomerID`
+  - `Country`
 
 ## 💻 SQL Query
 Lihat [query.sql](./query.sql)
