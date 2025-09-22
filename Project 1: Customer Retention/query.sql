@@ -132,6 +132,41 @@ SELECT "CustomerID", ROUND(AVG(days_between)::numeric) AS avg_days_between
 FROM diffs
 GROUP BY "CustomerID";
 
+-- RETENTION RATE
+WITH user_activity AS (
+    SELECT 
+        TO_CHAR(to_timestamp("InvoiceDate", 'MM/DD/YYYY HH24:MI'), 'YYYY-MM') AS month,
+        "CustomerID"
+    FROM d1
+    GROUP BY 1, "CustomerID"
+),
+active_counts AS (
+    SELECT 
+        month,
+        COUNT(DISTINCT "CustomerID") AS active_users
+    FROM user_activity
+    GROUP BY month
+),
+retention AS (
+    SELECT 
+        curr.month,
+        COUNT(DISTINCT curr."CustomerID") AS retained_users
+    FROM user_activity curr
+    JOIN user_activity prev
+      ON curr."CustomerID" = prev."CustomerID"
+     AND TO_DATE(curr.month, 'YYYY-MM') = (TO_DATE(prev.month, 'YYYY-MM') + INTERVAL '1 month')
+    GROUP BY curr.month
+)
+SELECT 
+    a.month,
+    a.active_users,
+    COALESCE(r.retained_users, 0) AS retained_users,
+    ROUND(COALESCE(r.retained_users::numeric, 0) / NULLIF(a.active_users, 0), 4) AS retention_rate
+FROM active_counts a
+LEFT JOIN retention r ON a.month = r.month
+ORDER BY a.month;
+
+
 -- SALES AND RETURN ANALYSIS
 -- 1. Gross Sales, Returns, Net Sales (keseluruhan)
 SELECT
