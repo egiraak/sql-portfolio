@@ -4,7 +4,7 @@
 Tujuan project ini adalah menghitung **monthly customer retention rate** dari dataset transaksi e-commerce.  
 Retention dihitung sebagai persentase pelanggan yang melakukan pembelian di bulan berikutnya.
 
-Dijalankan di environment: DbGate (Postgres).
+Dijalankan di environment: **DbGate (Postgres)**.
 
 ## 🗂️ Dataset
 - Dataset: [E-commerce Transactions (Kaggle)](https://www.kaggle.com/datasets/carrie1/ecommerce-data)
