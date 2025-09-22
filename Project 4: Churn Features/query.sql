@@ -1,1 +1,0 @@
-SELECT date_trunc('month', current_date) AS current_month, COUNT(*) AS sample_count FROM sample_table;
