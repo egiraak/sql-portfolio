@@ -22,8 +22,8 @@ Pada repository ini, saya secara khusus menampilkan **kumpulan mini-project SQL*
 
 ## 📂 Daftar Proyek
 
-1. [Customer Retention Analysis](./customer-retention) – PostgreSQL (DbGate)  
-2. [Sales Performance Analysis](./sales-performance) – PostgreSQL (DbGate)  
+1. [Customer Retention Analysis](./customer-retention) – PostgreSQL 
+2. [Sales Performance Analysis](./sales-performance) – PostgreSQL 
 3. [Cohort Analysis](./cohort-analysis) – PostgreSQL (pgAdmin)  
 4. [Churn Feature Engineering](./churn-feature) – AWS Athena  
 5. [Data Cleaning](./data-cleaning) – MySQL  
