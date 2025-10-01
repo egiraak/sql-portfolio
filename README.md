@@ -1,6 +1,4 @@
 # SQL Portfolio
-
-Halo! Saya Egira, seorang Data Enthusiast dengan pengalaman di berbagai tools analisis data.  
 Pada repository ini, saya secara khusus menampilkan **kumpulan mini-project SQL** untuk mendemonstrasikan keahlian dalam menulis query, analisis data berbasis database, dan pemecahan business case menggunakan SQL.  
 
 
