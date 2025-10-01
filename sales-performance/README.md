@@ -2,7 +2,7 @@
 
 ## 📌 Deskripsi
 Project ini bertujuan untuk menganalisis performa penjualan dataset global.
-Analisis difokuskan pada evaluasi pendapatan, profitabilitas, efektivitas channel penjualan, dampak marketing, hingga efisiensi proses order
+Analisis difokuskan pada evaluasi pendapatan, profitabilitas, efektivitas channel penjualan, dampak marketing, hingga efisiensi proses pemesanan
 
 Dijalankan di environment: **DbGate (Postgres)**.
 
