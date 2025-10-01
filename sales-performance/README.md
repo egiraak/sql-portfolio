@@ -8,7 +8,7 @@ Dijalankan di environment: **DbGate (Postgres)**.
 
 ## 🗂️ Dataset
 - Dataset: [Global Sales (Kaggle)](https://www.kaggle.com/datasets/shohinurpervezshohan/global-sales-performance-dataset)
-- Tabel utama: `d1`  
+- Tabel utama: `d2`  
   - `Region`
   - `Salesperson`
   - `Revenue`
