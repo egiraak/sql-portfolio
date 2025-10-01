@@ -7,7 +7,7 @@ Analisis difokuskan pada evaluasi pendapatan, profitabilitas, efektivitas channe
 Dijalankan di environment: **DbGate (Postgres)**.
 
 ## 🗂️ Dataset
-- Dataset: [E-commerce Transactions (Kaggle)](https://www.kaggle.com/datasets/carrie1/ecommerce-data)
+- Dataset: [Global Sales (Kaggle)](https://www.kaggle.com/datasets/shohinurpervezshohan/global-sales-performance-dataset)
 - Tabel utama: `d1`  
   - `Region`
   - `Salesperson`
