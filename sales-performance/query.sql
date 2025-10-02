@@ -1,4 +1,4 @@
--- Top 3 salesperson per Region
+-- Top 3 Salesperson per Region
 
 WITH ranked AS (
   SELECT
@@ -15,7 +15,7 @@ FROM ranked
 WHERE rn <= 3
 ORDER BY "Region", total_revenue DESC;
 
-
+-- Contribution Margin per Product Category
 SELECT
   "Product_Category",
   SUM("Revenue") AS revenue,
@@ -25,3 +25,35 @@ SELECT
 FROM d2
 GROUP BY "Product_Category"
 ORDER BY profit_margin DESC;
+
+-- ROAS (Return on Ad Spend)
+SELECT
+  "Product_Category",
+  SUM("Revenue") AS total_revenue,
+  SUM("Marketing_Spend") AS total_marketing,
+  ROUND(SUM("Revenue") * 100.0 / NULLIF(SUM("Marketing_Spend"),0), 2) AS roas_percent
+FROM d2
+GROUP BY "Product_Category"
+HAVING SUM("Marketing_Spend") > 0
+ORDER BY roas_percent DESC;
+
+-- Discount Elasticity Proxy
+WITH bands AS (
+  SELECT *,
+    CASE
+      WHEN "Discount_Percentage" = 0 THEN 'no_discount'
+      WHEN "Discount_Percentage" BETWEEN 0.01 AND 10 THEN 'low'
+      WHEN "Discount_Percentage" BETWEEN 10.0001 AND 20 THEN 'medium'
+      ELSE 'high'
+    END AS discount_band
+  FROM d2
+)
+SELECT
+  discount_band,
+  COUNT(*) AS orders,
+  SUM("Revenue") AS revenue,
+  SUM("Profit") AS profit,
+  AVG("Units_Sold") AS avg_units
+FROM bands
+GROUP BY discount_band
+ORDER BY revenue DESC;
